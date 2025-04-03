@@ -1,0 +1,1 @@
+kubectl --kubeconfig=clusterconfig.yaml   apply -f .\10-site.yaml
