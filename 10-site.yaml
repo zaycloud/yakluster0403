@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment # Deployment kommer att se till containers skapas 
 metadata:
   name: staticwebserver
   namespace: yatest
@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
         - name: staticwebserver
-          image: yeasy/simple-web
+          image: git.systementor.se/yacloud/beer0325
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Production
@@ -32,12 +32,12 @@ metadata:
   labels:
     app: staticwebserver
 spec:
-  type: LoadBalancer
+  type: LoadBalancer # LoadBalancer skapar en extern IP-adress som kan nås från internet
   ports:
   - name: http
-    port: 80
+    port: 80 # 443
     protocol: TCP
-    targetPort: 80
+    targetPort: 8080
   selector:
     app: staticwebserver
   sessionAffinity: None

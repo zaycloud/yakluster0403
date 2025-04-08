@@ -1,0 +1,15 @@
+# PVC claim för att få en persistent disk till mysql
+# en pvc är en "hårddisk" som ligger utanför podden/containern
+# P betyder persistant, det är en disk som inte försvinner när podden dör
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: yatest
+  name: pvc-mysql
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: linode-block-storage
