@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
         - name: staticwebserver
-          image: git.systementor.se/yacloud/beer0325
+          image: git.systementor.se/yacloud/ya0412
           ports:
             - containerPort: 8080
           env:
-            - name: ASPNETCORE_ENVIRONMENT
+            - name: RUNENVIRONMENT
               value: Production
 ---
 apiVersion: v1
