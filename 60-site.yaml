@@ -32,7 +32,7 @@ metadata:
   labels:
     app: staticwebserver
 spec:
-  type: ClusterIP # LoadBalancer skapar en extern IP-adress som kan nås från internet
+  type: LoadBalancer # LoadBalancer skapar en extern IP-adress som kan nås från internet
   ports:
   - name: http
     port: 80 # 443
