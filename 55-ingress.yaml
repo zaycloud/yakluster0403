@@ -17,4 +17,13 @@ spec:
                 name: staticwebserver-service
                 port:
                   number: 80
- 
+    - host: stefansgobeerapi.mooo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gobeerapi-service
+                port:
+                  number: 80
