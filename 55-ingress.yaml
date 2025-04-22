@@ -27,3 +27,13 @@ spec:
                 name: gobeerapi-service
                 port:
                   number: 80
+    - host: yagolangsite0422.mooo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: loginsite-service
+                port:
+                  number: 80

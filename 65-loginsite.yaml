@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment # Deployment kommer att se till containers skapas 
+metadata:
+  name: loginsite
+  namespace: yatest
+  labels:
+    app: loginsite
+spec:
+  replicas: 3 #scale out!!!!
+  selector:
+    matchLabels:
+      app: loginsite
+  template:
+    metadata:
+      labels:
+        app: loginsite
+    spec:
+      containers:
+        - name: loginsite
+          image: git.systementor.se/yacloud/yagolangsite0422
+          ports:
+            - containerPort: 8080
+          env:
+            - name: RUNENVIRONMENT
+              value: Production
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: yatest
+  name: loginsite-service
+  labels:
+    app: loginsite
+spec:
+  type: ClusterIP 
+  ports:
+  - name: http
+    port: 80 # 443
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: loginsite
+  sessionAffinity: None
