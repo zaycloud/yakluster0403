@@ -34,6 +34,16 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: loginsite-service
+                name: stensax-service
+                port:
+                  number: 80
+    - host: stensax0422.mooo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stensax-service
                 port:
                   number: 80
