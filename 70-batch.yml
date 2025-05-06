@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: fetchcustomerdata
+spec:
+  schedule: "0 5 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: fetchcustomerdata
+            image: git.systementor.se/yacloud/gobatchdemo
+            imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
