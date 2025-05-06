@@ -23,6 +23,8 @@ spec:
           env:
             - name: RUNENVIRONMENT
               value: Production
+      imagePullSecrets:
+      - name: gitsystementorregcred        
 ---
 apiVersion: v1
 kind: Service
