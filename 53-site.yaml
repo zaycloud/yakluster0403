@@ -17,12 +17,22 @@ spec:
     spec:
       containers:
         - name: stensax
-          image: git.systementor.se/yacloud/stensax0424
+          image: git.systementor.se/zayn/stensax0424 
           ports:
             - containerPort: 8080
           env:
             - name: RUNENVIRONMENT
               value: Production
+            - name: DB_SERVER
+              value: "mysqlserver1.yatest.svc.cluster.local"
+            - name: DB_DATABASE
+              value: "stensax"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USERNAME
+              value: "root"
+            - name: DB_PASSWORD
+              value: "hejsan123"
       imagePullSecrets:
       - name: gitsystementorregcred        
 ---
