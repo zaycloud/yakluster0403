@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment # Deployment kommer att se till containers skapas 
+metadata:
+  name: pythonapi
+  namespace: yatest
+  labels:
+    app: pythonapi
+spec:
+  replicas: 3 #scale out!!!!
+  selector:
+    matchLabels:
+      app: pythonapi
+  template:
+    metadata:
+      labels:
+        app: pythonapi
+    spec:
+      containers:
+        - name: pythonapi
+          image: git.systementor.se/yacloud/pythonapi0506
+          ports:
+            - containerPort: 5000
+          env:
+            - name: RUNENVIRONMENT
+              value: Production
+      imagePullSecrets:
+      - name: gitsystementorregcred        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: yatest
+  name: pythonapi0506-service
+  labels:
+    app: pythonapi
+spec:
+  type: ClusterIP # LoadBalancer skapar en extern IP-adress som kan nås från internet
+  ports:
+  - name: http
+    port: 80 # 443
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: pythonapi
+  sessionAffinity: None

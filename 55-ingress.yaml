@@ -34,7 +34,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: stensax-service
+                name: pythonapi0506-service
                 port:
                   number: 80
     - host: stensax0422.mooo.com
@@ -47,3 +47,5 @@ spec:
                 name: stensax-service
                 port:
                   number: 80
+
+#stefansapi0506.mooo.com                  
