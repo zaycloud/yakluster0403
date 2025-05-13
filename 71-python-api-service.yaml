@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-todo-api-service
+  namespace: yatest
+  labels:
+    app: python-todo-api
+spec:
+  type: ClusterIP # Internal service, Ingress will handle external access
+  ports:
+    - port: 80 # Port the service will listen on
+      targetPort: 5000 # Port your Flask app container is listening on
+      protocol: TCP
+      name: http
+  selector:
+    app: python-todo-api # Selects pods with this label

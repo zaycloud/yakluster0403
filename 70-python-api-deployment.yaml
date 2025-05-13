@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-todo-api
+  namespace: yatest
+  labels:
+    app: python-todo-api
+spec:
+  replicas: 1 # Start with 1, can scale later
+  selector:
+    matchLabels:
+      app: python-todo-api
+  template:
+    metadata:
+      labels:
+        app: python-todo-api
+    spec:
+      containers:
+        - name: python-todo-api
+          image: git.systementor.se/zayn/python-todo-api:0.11
+          ports:
+            - containerPort: 5000 # Assuming Flask runs on port 5000
+          env:
+            - name: RUNENVIRONMENT
+              value: "Production"
+            - name: DB_HOST
+              value: "postgres-service.yatest.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "tododb"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: POSTGRES_PASSWORD
+          # If your Flask app needs a specific command to run, add it here
+          # command: ["python"]
+          # args: ["app.py"]
+      imagePullSecrets:
+        - name: gitsystementorregcred
