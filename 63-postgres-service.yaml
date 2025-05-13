@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: yatest
+  labels:
+    app: postgres
+spec:
+  type: ClusterIP # Only accessible within the cluster
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres
