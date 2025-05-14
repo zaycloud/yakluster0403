@@ -1,0 +1,85 @@
+# filepath: /Users/zayn/Documents/uppgift/cloudstartgolangapi/backup-cronjob.yaml
+# Testar CodeBuild webhook
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: database-backup
+  namespace: yatest
+spec:
+  schedule: "0 2 * * *"  # Kör varje dag kl 02:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: debian:bullseye-slim # Changed to debian:bullseye-slim
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              echo "Updating package lists..."
+              apt-get update -qq
+              echo "Installing dependencies: default-mysql-client, wget, gzip, coreutils..."
+              apt-get install -y -qq default-mysql-client wget gzip coreutils
+              echo "Dependencies installed."
+
+              echo "Downloading mc (MinIO client)..."
+              wget -O /usr/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc
+              chmod +x /usr/bin/mc
+              echo "mc downloaded and made executable."
+
+              echo "Copying backup.sh from ConfigMap..."
+              cp /script/backup.sh /backup.sh
+              chmod +x /backup.sh
+              echo "Running backup.sh..."
+              /backup.sh
+            volumeMounts:
+            - name: script-volume
+              mountPath: /script
+              readOnly: true
+            - name: backup-dir
+              mountPath: /backup
+            env:
+            - name: MYSQL_HOST
+              value: mysqlserver1 # Changed from mysql
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: MYSQL_PASSWORD
+            - name: MYSQL_DATABASE
+              value: stensax
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: S3_BUCKET
+            - name: S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: S3_ENDPOINT
+          volumes:
+          - name: script-volume
+            configMap:
+              name: mysql-backup-script
+          - name: backup-dir
+            emptyDir: {}
+          restartPolicy: OnFailure

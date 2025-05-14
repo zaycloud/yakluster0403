@@ -6,7 +6,7 @@ metadata:
   labels:
     app: frontend-todo-app
 spec:
-  replicas: 1 # Start with 1, can scale later
+  replicas: 1
   selector:
     matchLabels:
       app: frontend-todo-app
@@ -18,7 +18,7 @@ spec:
       containers:
         - name: frontend-todo-app
           image: git.systementor.se/zayn/frontend-todo-app:1.0
-          imagePullPolicy: Always # Add this line
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
       imagePullSecrets:
