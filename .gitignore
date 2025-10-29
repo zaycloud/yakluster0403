@@ -1,2 +1,3 @@
 clusterconfig.yaml
 k8yacloud-kubeconfig.yaml
+backup-secrets.yaml
